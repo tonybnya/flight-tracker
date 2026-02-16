@@ -15,7 +15,8 @@ const FlightSearch = () => {
         setFlightData(null);
 
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/flights/${flightNumber}`);
+            const baseUrl = import.meta.env.VITE_API_URL || '';
+            const response = await fetch(`${baseUrl}/api/flights/${flightNumber}`);
             if (!response.ok) {
                 throw new Error('No flights found for that number.');
             }

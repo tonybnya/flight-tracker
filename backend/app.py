@@ -104,5 +104,8 @@ def get_flight(flight_number):
         return jsonify({"error": "Internal server error"}), 500
 
 
+# Export for Vercel
+app = app
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

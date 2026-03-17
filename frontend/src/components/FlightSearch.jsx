@@ -40,6 +40,9 @@ const FlightSearch = () => {
                     </div>
                     <h1 className="text-6xl font-bold text-gray-900 mb-2">Flight Tracker</h1>
                     <p className="text-gray-500">Track any flight, anytime, anywhere.</p>
+                    <p className="text-gray-400 text-sm mt-2">
+                        Try <span className="font-mono text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">TEST1</span> or <span className="font-mono text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">TEST2</span> to see a demo flight
+                    </p>
                 </div>
 
                 <form onSubmit={handleSearch} className="relative mb-12">

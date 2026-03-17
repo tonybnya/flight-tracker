@@ -13,6 +13,16 @@ AVIATION_STACK_API_KEY = os.getenv("AVIATION_STACK_API_KEY")
 AVIATION_STACK_API_URL = os.getenv("AVIATION_STACK_API_URL")
 
 
+@app.route('/api/opensky/states', methods=['GET'])
+def get_opensky_states():
+    try:
+        # Fetching a limited number of states to keep it responsive
+        response = requests.get("https://opensky-network.org/api/states/all")
+        return jsonify(response.json())
+    except Exception as e:
+        print(f"Error fetching OpenSky states: {e}")
+        return jsonify({"error": "Failed to fetch aircraft states"}), 500
+
 @app.route('/api/flights/<flight_number>', methods=['GET'])
 def get_flight(flight_number):
     try:

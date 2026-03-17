@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Search, Plane, Calendar, Clock, MapPin } from 'lucide-react';
+import { Search, Plane, Calendar, Clock, MapPin, Map as MapIcon, Globe } from 'lucide-react';
 import FlightMap from './FlightMap';
+import FlightVisualizer3D from './FlightVisualizer3D';
 
 const FlightSearch = () => {
     const [flightNumber, setFlightNumber] = useState('');
     const [flightData, setFlightData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [viewMode, setViewMode] = useState('2d'); // '2d' or '3d'
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -69,12 +71,38 @@ const FlightSearch = () => {
             </div>
 
             {flightData && (
-                <div className="mt-12">
-                    <div className="text-center mb-8">
+                <div className="mt-12 space-y-8">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <span className="inline-block bg-green-50 text-green-700 text-sm font-medium px-6 py-2 rounded-full border border-green-200 shadow-sm animate-pulse">
                             ✨ Flight found! Click the card results to add to Google Calendar
                         </span>
+                        
+                        <div className="flex bg-gray-100 p-1 rounded-2xl border border-gray-200 shadow-sm">
+                            <button
+                                onClick={() => setViewMode('2d')}
+                                className={`flex items-center gap-2 px-6 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${
+                                    viewMode === '2d' 
+                                    ? 'bg-white text-blue-600 shadow-md translate-y-0' 
+                                    : 'text-gray-500 hover:text-gray-700'
+                                }`}
+                            >
+                                <MapIcon size={18} />
+                                <span>2D Map</span>
+                            </button>
+                            <button
+                                onClick={() => setViewMode('3d')}
+                                className={`flex items-center gap-2 px-6 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${
+                                    viewMode === '3d' 
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
+                                    : 'text-gray-500 hover:text-gray-700'
+                                }`}
+                            >
+                                <Globe size={18} />
+                                <span>3D View</span>
+                            </button>
+                        </div>
                     </div>
+
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
                         <a
                             href={(() => {
@@ -90,7 +118,7 @@ const FlightSearch = () => {
                             rel="noopener noreferrer"
                             className="block h-full hover:scale-[1.02] active:scale-95 transition-transform duration-200 cursor-pointer"
                         >
-                            <div className="bg-white rounded-3xl shadow-xl p-8 h-full flex flex-col justify-between transition-all duration-300 ease-in-out hover:shadow-2xl">
+                            <div className="bg-white rounded-3xl shadow-xl p-8 h-full flex flex-col justify-between transition-all duration-300 ease-in-out hover:shadow-2xl border border-gray-50">
                                 <div className="flex items-center gap-3 mb-8">
                                     <div className="p-2 bg-blue-50 rounded-full">
                                         <Plane className="w-6 h-6 text-blue-600" />
@@ -174,7 +202,14 @@ const FlightSearch = () => {
                                 )}
                             </div>
                         </a>
-                        <FlightMap origin={flightData.origin} destination={flightData.destination} />
+                        
+                        <div className="h-full min-h-[500px]">
+                            {viewMode === '2d' ? (
+                                <FlightMap origin={flightData.origin} destination={flightData.destination} />
+                            ) : (
+                                <FlightVisualizer3D origin={flightData.origin} destination={flightData.destination} />
+                            )}
+                        </div>
                     </div>
                 </div>
             )}
@@ -183,3 +218,4 @@ const FlightSearch = () => {
 };
 
 export default FlightSearch;
+
